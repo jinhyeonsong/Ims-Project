@@ -1,0 +1,66 @@
+@charset "UTF-8";
+
+#loginBox {
+	width: 500px;
+	height: 260px;
+	position: fixed;
+	left: 50%;
+	top: 50%;
+	margin: -130px 0 0 -250px;
+}
+
+#loginBox .row {
+	margin: 10px 0;
+	text-align: center
+}
+
+#loginBox .row input {
+	width: 400px;
+	font: 500 20px "Noto Sans KR", sans-serif;
+	padding: 10px;
+	color: #999A9C;
+}
+
+#loginBtn {
+	width: 400px;
+	padding: 11px;
+}
+
+#mainServiceBox {
+	width: 800px;
+	height: 160px;
+	margin: auto;
+	text-align: center;
+}
+
+#mainServiceBox .item {
+	width: 388px;
+	height: 148px;
+	float: left;
+	border: 1px solid #999A9C;
+	margin: 5px;
+	border-radius: 12px;
+}
+
+#mainServiceBox .item:hover {
+	border-color: #F5DF4E;
+	box-shadow: 0 8px 17px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0
+		rgba(0, 0, 0, 0.19);
+}
+
+#mainServiceBox .item:hover>a {
+	color: #F5DF4E;
+	text-shadow: 0 0 2px #424242;
+}
+
+#mainServiceBox .item>a {
+	text-decoration: none;
+	display: block;
+	width: 388px;
+	height: 148px;
+	font-size: 50px;
+	font-weight: 900;
+	line-height: 148px;
+	transition: .2s ease;
+}
+

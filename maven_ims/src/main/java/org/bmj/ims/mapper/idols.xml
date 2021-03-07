@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="idols">
+
+	<update id="updateLikeCount" parameterType="int">
+		UPDATE idols
+		SET like_count =
+		(SELECT count(*) 
+		from likes 
+		WHERE type='I' AND type_no = #{idolId})
+		WHERE idol_id = #{idolId}
+	</update>
+
+	<update id="update" parameterType="Idol">
+		UPDATE idols
+		SET name =
+		#{name},
+		height = #{height},
+		weight = #{weight},
+		birth_date =
+		#{birthDate},
+		gender = #{gender},
+		group_id = #{groupId}
+		WHERE idol_id =
+		#{idolId}
+	</update>
+
+	<insert id="insert" parameterType="Idol">
+		<selectKey keyProperty="idolId" order="BEFORE"
+			resultType="int">
+			SELECT idols_seq.nextval
+			FROM dual
+		</selectKey>
+		INSERT INTO idols(idol_id, name, height, weight, birth_date,
+		gender,profile_image, group_id,like_count,regdate)
+		VALUES(#{idolId},#{name},#{height},#{weight},#{birthDate},
+		#{gender},#{profileImage},#{groupId},0,systimestamp)
+	</insert>
+
+	<delete id="delete" parameterType="int">
+		DELETE idols
+		WHERE idol_id =
+		#{idolId}
+	</delete>
+
+	<select id="selectList" resultType="Idol" parameterType="pageVO">
+		SELECT
+		idolId, name, height, weight, birthDate,gender,profileImage,groupId
+		FROM(SELECT idolId, name, height, weight,
+		birthDate,gender,profileImage,groupId, rownum r
+		FROM(SELECT idol_id
+		idolId,
+		name, height, weight,
+		birth_date birthDate, gender,
+		profile_image profileImage,
+		group_id groupId
+		FROM idols
+		ORDER BY 1))
+		WHERE r BETWEEN #{start} AND #{end}
+	</select>
+
+	<select id="selectTotal" resultType="int">
+		SELECT COUNT(*)
+		FROM idols
+	</select>
+
+	<select id="selectIdolList" parameterType="int"
+		resultType="Idol">
+		SELECT idol_id idolId,name, height, weight, birth_date
+		birthDate, gender,
+		profile_image profileImage, group_id groupId,
+		like_count
+		likeCount,regdate
+		FROM idols
+		WHERE group_id=#{groupId}
+		ORDER BY
+		1
+	</select>
+
+	<select id="selectOne" parameterType="int" resultType="Idol">
+		SELECT
+		i.idol_id idolId,i.name name, i.height, i.weight, i.birth_date
+		birthDate,
+		i.gender, i.profile_image profileImage, i.group_id groupId,
+		i.like_count
+		likeCount,i.regdate, g.name groupName
+		FROM idols i, groups
+		g
+		WHERE i.group_id=g.group_id AND i.idol_id=#{idolId}
+	</select>
+
+	<select id="selectOneMyLike" parameterType="map"
+		resultType="Idol">
+		SELECT i.idol_id idolId,i.name name, i.height, i.weight,
+		i.birth_date
+		birthDate,
+		i.gender, i.profile_image profileImage,
+		i.group_id groupId, i.like_count
+		likeCount,i.regdate, g.name groupName,
+		(SELECT count(*)
+		FROM likes
+		WHERE type='I'
+		AND type_no = #{idolId}
+		AND member_no = #{memberNo}) myLikeCount
+		FROM idols
+		i, groups g
+		WHERE i.group_id=g.group_id AND i.idol_id=#{idolId}
+	</select>
+
+</mapper>
+

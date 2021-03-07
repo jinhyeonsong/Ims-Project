@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="groups">
+
+	<update id="update" parameterType="Group">
+		UPDATE groups
+		SET name = #{name},
+		debut_date =#{debutDate}
+		WHERE group_id = #{groupId}
+	</update>
+
+	<insert id="insert" parameterType="Group">
+		<selectKey order="BEFORE" 
+		resultType="int"
+		 keyProperty="groupId">
+			SELECT groups_seq.nextval
+			FROM dual
+		</selectKey>
+		INSERT INTO groups(group_id,
+		name,debut_date,regdate,like_count)
+		VALUES(#{groupId},#{name},#{debutDate},systimestamp,0)
+	</insert>
+
+	<delete id="delete" parameterType="int">
+		DELETE groups
+		WHERE group_id =
+		#{groupId}
+	</delete>
+	
+	<select id="selectGroupList" resultType="Group">
+		SELECT group_id groupId,name, debut_date debutDate,regdate,
+		like_count likeCount
+		FROM groups
+		ORDER BY 1
+	</select>
+
+	<select id="selectList" resultType="Group"
+		parameterType="PageVO">
+		SELECT groupId,name,debutDate,regdate,likeCount,rownum r
+		FROM(SELECT groupId,name, debutDate,regdate,likeCount,rownum r
+		FROM(SELECT group_id groupId,name, debut_date debutDate,regdate,
+		like_count likeCount
+		FROM groups
+		ORDER BY 1))
+		WHERE r BETWEEN #{start} AND #{end}
+	</select>
+
+	<select id="selectTotal" resultType="int">
+		SELECT COUNT(*)
+		FROM groups
+	</select>
+
+	<select id="selectDetail" parameterType="int" resultType="Group">
+		SELECT group_id groupId,name,debut_date debutDate,regdate,like_count
+		likeCount
+		FROM groups
+		WHERE group_id=#{groupId}
+	</select>
+
+</mapper>
+

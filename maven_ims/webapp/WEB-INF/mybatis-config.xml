@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration 
+PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+<settings>
+<setting name="jdbcTypeForNull" value="NULL" />
+</settings>
+
+	<typeAliases>
+		<typeAlias type="org.bmj.ims.vo.Member" alias="Member"/>
+		<typeAlias type="org.bmj.ims.vo.Group" alias="Group"/>
+		<typeAlias type="org.bmj.ims.vo.Idol" alias="Idol"/>
+		<typeAlias type="org.bmj.ims.vo.Like" alias="Like"/>
+		<typeAlias type="org.bmj.ims.vo.PageVO" alias="PageVO"/>
+	</typeAliases>
+
+	<!-- mapper 경로 설정 -->
+	<mappers>
+		<mapper resource="org/bmj/ims/mapper/members.xml"></mapper>
+		<mapper resource="org/bmj/ims/mapper/groups.xml"></mapper>
+		<mapper resource="org/bmj/ims/mapper/idols.xml"></mapper>
+		<mapper resource="org/bmj/ims/mapper/likes.xml"></mapper>
+	</mappers>
+
+</configuration>
+
+
